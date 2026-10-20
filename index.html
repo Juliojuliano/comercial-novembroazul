@@ -1,0 +1,400 @@
+<title>Comercial Novembro Azul Lusuture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+  /* Layout: palco de vídeo (16:9 no computador, vertical no celular) com a mascote
+     em um círculo branco que muda de lado a cada cena, e o texto do outro lado. */
+  :root {
+    --azul-noite: #0a2463;
+    --azul: #1d5bd6;
+    --azul-ceu: #d8e6ff;
+    --verde-la: #86b94c;
+    --branco: #ffffff;
+    --tinta: #0a1a3f;
+    --fonte-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+    --fonte-corpo: "DM Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: #06153d;
+    color: var(--branco);
+    font-family: var(--fonte-corpo);
+    margin: 0;
+    padding-block: 20px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .palco-wrap { width: min(100%, 1100px); }
+  .palco {
+    container-type: inline-size;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 14px;
+    background: radial-gradient(120% 120% at 20% 10%, var(--azul) 0%, var(--azul-noite) 70%);
+    isolation: isolate;
+  }
+  @media (max-width: 640px) {
+    .palco-wrap { width: min(100%, 440px); }
+    .palco { aspect-ratio: 9 / 16; }
+  }
+
+  /* Fundo: faixas diagonais suaves */
+  .palco::before {
+    content: "";
+    position: absolute; inset: -20%;
+    background: repeating-linear-gradient(115deg, rgba(255,255,255,.05) 0 3cqw, transparent 3cqw 9cqw);
+    z-index: -1;
+    animation: faixas 14s linear infinite;
+  }
+  @keyframes faixas { to { transform: translateX(9cqw); } }
+
+  /* Mascote */
+  .mascote {
+    position: absolute;
+    width: 42cqw; height: 42cqw;
+    left: 5cqw; top: 50%;
+    translate: 0 -50%;
+    transition: left .9s cubic-bezier(.6,0,.2,1), top .9s cubic-bezier(.6,0,.2,1), width .9s cubic-bezier(.6,0,.2,1), height .9s cubic-bezier(.6,0,.2,1);
+    z-index: 2;
+  }
+  .mascote__aro {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: var(--branco);
+    overflow: hidden;
+    box-shadow: 0 0 0 1.2cqw rgba(255,255,255,.18), 0 3cqw 6cqw rgba(0,0,0,.35);
+    animation: pulo 1.7s ease-in-out infinite;
+  }
+  .mascote__aro img { width: 100%; height: 100%; display: block; object-fit: cover; scale: 1.08; }
+  @keyframes pulo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1.6cqw); }
+  }
+
+  /* Texto */
+  .cena {
+    position: absolute;
+    top: 50%; translate: 0 -50%;
+    left: 52cqw; right: 5cqw;
+    opacity: 0;
+    transform: translateY(2cqw);
+    transition: opacity .6s ease, transform .6s ease;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .cena.on { opacity: 1; transform: none; }
+  .rotulo {
+    font-weight: 700;
+    font-size: 1.7cqw;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--azul-ceu);
+    margin: 0 0 1.6cqw;
+  }
+  .rotulo:has(.fita-rotulo) { display: flex; align-items: center; gap: 1cqw; }
+  .fita-rotulo { width: 4.2cqw; height: 4.2cqw; flex: none; }
+  @media (max-width: 640px) {
+    .rotulo:has(.fita-rotulo) { gap: 2cqw; }
+    .fita-rotulo { width: 8cqw; height: 8cqw; }
+  }
+  .titulo {
+    font-family: var(--fonte-display);
+    font-weight: 800;
+    font-size: 5.6cqw;
+    line-height: 1.02;
+    margin: 0;
+    text-wrap: balance;
+    letter-spacing: -.01em;
+  }
+  .titulo em { font-style: normal; color: var(--verde-la); }
+  .texto {
+    font-size: 2.1cqw;
+    line-height: 1.4;
+    margin: 2cqw 0 0;
+    color: #eaf1ff;
+    max-width: 38cqw;
+  }
+  .grande { font-size: 7.4cqw; }
+
+  /* Lado invertido (mascote à direita) */
+  .palco[data-lado="dir"] .mascote { left: 53cqw; }
+  .palco[data-lado="dir"] .cena { left: 5cqw; right: 52cqw; }
+
+  /* Cena final: mascote ao centro-esquerda, laço azul */
+  .laco { width: 9cqw; height: 9cqw; margin-bottom: 1.6cqw; }
+
+  .assinatura {
+    display: inline-flex; align-items: center; gap: 1.2cqw;
+    margin-top: 2.4cqw;
+    padding: 1cqw 2cqw;
+    border-radius: 99px;
+    background: var(--branco);
+    color: var(--azul-noite);
+    font-family: var(--fonte-display);
+    font-weight: 800;
+    font-size: 2.6cqw;
+  }
+  .assinatura span { font-family: var(--fonte-corpo); font-weight: 500; font-size: 1.8cqw; color: var(--azul); }
+
+  .contato {
+    margin: 2cqw 0 0;
+    font-weight: 700;
+    font-size: 2.3cqw;
+    line-height: 1.5;
+    color: var(--azul-ceu);
+  }
+  .links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .btn-link {
+    display: inline-flex; align-items: center; gap: 9px;
+    font: 700 15px var(--fonte-corpo);
+    text-decoration: none;
+    color: var(--branco);
+    padding: 11px 20px;
+    border-radius: 99px;
+  }
+  .btn-link svg { width: 20px; height: 20px; flex: none; }
+  .btn-insta { background: linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%); padding: 11px; }
+  .btn-insta svg { width: 24px; height: 24px; }
+  .btn-site { background: var(--verde-la); color: var(--tinta); padding: 11px; }
+  .btn-site svg { width: 24px; height: 24px; }
+  .btn-link:focus-visible { outline: 3px solid var(--branco); outline-offset: 3px; }
+  @media (max-width: 640px) { .contato { font-size: 4.6cqw; margin-top: 3cqw; } }
+
+  /* Barra de progresso */
+  .progresso {
+    position: absolute; left: 0; right: 0; bottom: 0; height: .8cqw;
+    background: rgba(255,255,255,.15); z-index: 4;
+  }
+  .progresso i { display: block; height: 100%; width: 0; background: var(--verde-la); }
+
+  /* Em celular, tudo empilha: mascote em cima, texto embaixo */
+  @media (max-width: 640px) {
+    .mascote { width: 66cqw; height: 66cqw; left: 17cqw; top: 6cqw; translate: 0 0; }
+    .palco[data-lado="dir"] .mascote { left: 17cqw; }
+    .cena, .palco[data-lado="dir"] .cena { left: 7cqw; right: 7cqw; top: auto; bottom: 9cqw; translate: 0 0; }
+    .rotulo { font-size: 3.4cqw; }
+    .titulo { font-size: 10.5cqw; }
+    .grande { font-size: 13cqw; }
+    .texto { font-size: 4.4cqw; max-width: none; }
+    .laco { width: 15cqw; height: 15cqw; }
+    .assinatura { font-size: 5.4cqw; padding: 2cqw 4.4cqw; gap: 2.4cqw; }
+    .assinatura span { font-size: 3.6cqw; }
+    .progresso { height: 1.4cqw; }
+  }
+
+  /* Controles */
+  .controles { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  button {
+    font: 700 15px var(--fonte-corpo);
+    background: var(--branco);
+    color: var(--azul-noite);
+    border: 0; border-radius: 99px;
+    padding: 11px 22px;
+    cursor: pointer;
+  }
+  button.sec { background: transparent; color: var(--azul-ceu); box-shadow: inset 0 0 0 1.5px rgba(216,230,255,.5); }
+  button:focus-visible { outline: 3px solid var(--verde-la); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mascote__aro, .palco::before { animation: none; }
+    .mascote, .cena { transition: none; }
+  }
+</style>
+
+<div class="palco-wrap">
+  <div class="palco" id="palco" data-lado="esq">
+
+    <div class="mascote" id="mascote">
+      <div class="mascote__aro"><img src="mascote.gif" alt="Mascote da Lusuture, um novelo de lã de jaleco branco, acenando"></div>
+    </div>
+
+    <!-- Cena 1: abertura -->
+    <div class="cena" data-lado="esq">
+      <p class="rotulo">Lusuture apresenta</p>
+      <h1 class="titulo grande">Novembro <em>Azul</em></h1>
+      <p class="texto">A Lusuture faz fios de sutura e sabe o valor de cuidar bem. Em novembro, o cuidado é com você.</p>
+    </div>
+
+    <!-- Cena 2: o problema -->
+    <div class="cena" data-lado="dir">
+      <p class="rotulo"><svg class="fita-rotulo" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="#fff" stroke="#fff" stroke-width="7" stroke-linejoin="round">
+          <ellipse cx="50" cy="32" rx="19" ry="25" fill="none" stroke-width="16"/>
+          <path d="M41 50h18l22 46H62Z M41 50h18L38 96H18Z"/>
+        </g>
+        <g fill="#1d5bd6" stroke="#0a2463" stroke-width="2" stroke-linejoin="round">
+          <path d="M41 50h18l22 46H62Z M41 50h18L38 96H18Z"/>
+          <ellipse cx="50" cy="32" rx="19" ry="25" fill="none" stroke="#0a2463" stroke-width="16"/>
+          <ellipse cx="50" cy="32" rx="19" ry="25" fill="none" stroke="#1d5bd6" stroke-width="12"/>
+        </g>
+      </svg>O fato</p>
+      <h2 class="titulo">Depois do câncer de pele, é o mais comum entre os <em>homens</em> no Brasil.</h2>
+      <p class="texto">O câncer de próstata.</p>
+    </div>
+
+    <!-- Cena 3: a boa notícia -->
+    <div class="cena" data-lado="esq">
+      <p class="rotulo">A boa notícia</p>
+      <h2 class="titulo">Descoberto cedo, tem <em>grandes chances</em> de cura.</h2>
+      <p class="texto">No começo, muitas vezes não dá nenhum sintoma. Por isso o exame importa.</p>
+    </div>
+
+    <!-- Cena 4: quando procurar -->
+    <div class="cena" data-lado="dir">
+      <p class="rotulo">Quando procurar</p>
+      <h2 class="titulo">A partir dos <em>50 anos</em>.</h2>
+      <p class="texto">Aos 45, se há casos na família. Converse com um urologista.</p>
+    </div>
+
+    <!-- Cena 5: chamada -->
+    <div class="cena" data-lado="esq">
+      <p class="rotulo">Faça por você</p>
+      <h2 class="titulo">Uma consulta hoje. <em>Mais anos</em> pela frente.</h2>
+      <p class="texto">Quem ama cuida. Comece cuidando de você.</p>
+    </div>
+
+    <!-- Cena 6: assinatura -->
+    <div class="cena" data-lado="dir">
+      <svg class="laco" viewBox="0 0 64 64" role="img" aria-label="Laço azul do Novembro Azul">
+        <path d="M32 6c-10 0-17 7-17 15 0 9 7 14 12 22l-9 15h9l8-13 8 13h9l-9-15c5-8 12-13 12-22 0-8-7-15-17-15Zm0 9c5 0 8 3 8 6 0 5-4 8-8 14-4-6-8-9-8-14 0-3 3-6 8-6Z" fill="#fff" fill-rule="evenodd"/>
+      </svg>
+      <h2 class="titulo">Cuide-se. <em>Procure um médico.</em></h2>
+      <div class="assinatura">Lusuture <span>Novembro Azul</span></div>
+      <p class="contato">@lusutureoficial<br>lusuture.com.br</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="links">
+  <a class="btn-link btn-insta" href="https://www.instagram.com/lusutureoficial" target="_blank" rel="noopener" aria-label="Instagram da Lusuture">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
+  <a class="btn-link btn-site" href="https://lusuture.com.br/" target="_blank" rel="noopener" aria-label="Site da Lusuture">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/>
+    </svg>
+  </a>
+</div>
+
+<script>
+  /* Linha do tempo: cada cena dura o tempo (em ms) indicado.
+     O lado da mascote vem do atributo data-lado de cada cena. */
+  var DURACOES = [5200, 6200, 6200, 6600, 5600, 7000];
+  var TOTAL = DURACOES.reduce(function (a, b) { return a + b; }, 0);
+
+  var palco = document.getElementById('palco');
+  var cenas = Array.prototype.slice.call(palco.querySelectorAll('.cena'));
+
+  var tempo = 0;          // ms decorridos desde o início do comercial
+  var ultimo = null;      // timestamp do último quadro
+  var rodando = true;
+  var atual = -1;
+
+  /* ---- Voz da mascote (síntese de voz do navegador, pt-BR) ---- */
+  var FALAS = [
+    'Oi! Eu sou a mascote da Lusuture. A gente fabrica fios de sutura e sabe o valor de cuidar bem. Em novembro, o cuidado é com você.',
+    'Depois do câncer de pele, o câncer de próstata é o mais comum entre os homens no Brasil.',
+    'Descoberto cedo, tem grandes chances de cura. E no começo, muitas vezes não dá nenhum sintoma.',
+    'A partir dos cinquenta anos, procure um urologista. Aos quarenta e cinco, se há casos na família.',
+    'Uma consulta hoje, e mais anos pela frente. Quem ama, cuida.',
+    'Cuide-se. Procure um médico. Lusuture, Novembro Azul. Siga a gente no Instagram, arroba lusutureoficial.'
+  ];
+  var vozLigada = true;     // a voz já começa ligada
+  var falando = false;
+  var bloqueioTratado = false;
+  var suporta = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+  var aro = palco.querySelector('.mascote__aro');
+
+  // Escolhe a voz em português do Brasil, se existir
+  function escolherVoz() {
+    var vozes = window.speechSynthesis.getVoices();
+    var br = vozes.filter(function (v) { return /pt[-_]BR/i.test(v.lang); });
+    var pt = br.length ? br : vozes.filter(function (v) { return /^pt/i.test(v.lang); });
+    return pt[0] || null;
+  }
+
+  function falar(i) {
+    if (!suporta || !vozLigada) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(FALAS[i]);
+    var v = escolherVoz();
+    if (v) u.voice = v;
+    u.lang = 'pt-BR';
+    u.rate = 1.0;
+    u.pitch = 1.3;   // tom mais agudo, combina com a mascote
+    u.onstart = function () { falando = true; aro.style.animationDuration = '.45s'; };
+    var fim = function () { falando = false; aro.style.animationDuration = ''; };
+    u.onend = fim;
+    u.onerror = function (e) {
+      fim();
+      if (e && e.error === 'not-allowed') bloqueada();
+    };
+    window.speechSynthesis.speak(u);
+    // Se em ~1,5 s a fala não começou, o navegador provavelmente bloqueou o som automático
+    setTimeout(function () {
+      if (!falando && vozLigada && !window.speechSynthesis.speaking) bloqueada();
+    }, 1500);
+  }
+
+  // Navegadores só liberam som depois de um toque. Se bloquear, a voz
+  // começa no primeiro toque, clique ou tecla em qualquer lugar da página.
+  function bloqueada() {
+    if (bloqueioTratado) return;
+    bloqueioTratado = true;
+    var liberar = function () {
+      ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+        document.removeEventListener(ev, liberar, true);
+      });
+      bloqueioTratado = false;
+      tempo = 0; atual = -1; rodando = true;   // recomeça com a voz junto
+    };
+    ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+      document.addEventListener(ev, liberar, true);
+    });
+  }
+
+  // Descobre em qual cena o tempo atual cai
+  function indiceDaCena(t) {
+    var soma = 0;
+    for (var i = 0; i < DURACOES.length; i++) {
+      soma += DURACOES[i];
+      if (t < soma) return i;
+    }
+    return DURACOES.length - 1;
+  }
+
+  // Mostra a cena i e move a mascote para o lado correto
+  function mostrar(i) {
+    if (i === atual) return;
+    atual = i;
+    cenas.forEach(function (c, k) { c.classList.toggle('on', k === i); });
+    palco.setAttribute('data-lado', cenas[i].getAttribute('data-lado'));
+    falar(i);
+  }
+
+  function quadro(agora) {
+    if (rodando) {
+      var passo = ultimo !== null ? agora - ultimo : 0;
+      // Com a voz ligada, a cena espera a fala terminar antes de passar para a próxima
+      var fimDaCena = DURACOES.slice(0, indiceDaCena(tempo) + 1).reduce(function (a, b) { return a + b; }, 0);
+      if (vozLigada && falando && tempo + passo >= fimDaCena - 50) passo = 0;
+      tempo += passo;
+      if (tempo >= TOTAL) tempo = 0;           // repete em loop
+      mostrar(indiceDaCena(tempo));
+    }
+    ultimo = agora;
+    requestAnimationFrame(quadro);
+  }
+
+  mostrar(0);
+  requestAnimationFrame(quadro);
+</script>
